@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="buttons">
-      <button @click="createCarrot" class="carrot up">
+      <button v-if="user.uid" @click="createCarrot" class="carrot up">
         &#x1F955;
       </button>
     </div>
@@ -23,6 +23,7 @@ export default {
   },
   computed: {
     ...mapState({
+      user: 'user',
       carrots: 'carrots',
     })
   },
