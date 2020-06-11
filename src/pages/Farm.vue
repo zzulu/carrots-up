@@ -2,12 +2,15 @@
   <div class="container">
     <div class="buttons">
       <button v-if="user.uid" @click="createCarrot" class="carrot up">
-        &#x1F955;
+        🥕
+      </button>
+      <button v-if="user.uid" @click="deleteAllCarrots" class="carrot up">
+        🗑
       </button>
     </div>
-    <div class="carrots">
-      <Carrot v-for="carrot in carrots" :key="carrot['.key']"></Carrot>
-    </div>
+    <transition-group tag="div" name="carrots" class="carrots">
+      <carrot v-for="carrot in carrots" :key="carrot['.key']" :carrot="carrot" @delete-carrot="deleteCarrot"></carrot>
+    </transition-group>
   </div>
 </template>
 
@@ -29,8 +32,17 @@ export default {
   },
   methods: {
     createCarrot: function () {
-      this.$store.dispatch('createCarrot', this.$route.params.farmId)
+      this.$store.dispatch('createCarrot')
     },
+    deleteCarrot: function (key) {
+      this.$store.dispatch('deleteCarrot', key)
+    },
+    deleteAllCarrots: function () {
+      this.$store.dispatch('deleteAllCarrots')
+    },
+  },
+  created: function () {
+    this.$store.dispatch('setFarm', this.$route.params.farmId)
   },
   mounted: function () {
     firebase.auth().onAuthStateChanged((user) => {
@@ -38,7 +50,7 @@ export default {
         this.$store.dispatch('setUser', {
           'uid': user.uid,
         })
-        this.$store.dispatch('bindCarrots', this.$route.params.farmId)
+        this.$store.dispatch('bindCarrots')
       } else {
         this.$store.dispatch('clearUser')
         firebase.auth().signInAnonymously().catch((err) => {
@@ -58,8 +70,8 @@ export default {
 .buttons {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
   text-align: center;
 }
 
@@ -84,10 +96,30 @@ export default {
 
 .carrots {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   flex-wrap: wrap-reverse;
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+/* Animation */
+
+.carrots-enter {
+  opacity: 0;
+  transform: translateY(-40px);
+}
+
+.carrots-enter-active {
+  z-index: -1;
+}
+
+.carrots-leave-to {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.carrots-leave-active {
+  z-index: -1;
 }
 </style>
