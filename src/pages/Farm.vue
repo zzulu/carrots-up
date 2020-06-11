@@ -115,7 +115,7 @@ export default {
   margin-bottom: 1rem;
 }
 
-/* Animation */
+/* Transitions */
 
 .carrots-enter {
   opacity: 0;
