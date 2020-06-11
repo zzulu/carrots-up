@@ -9,7 +9,7 @@
       </button>
     </div>
     <transition-group tag="div" name="carrots" class="carrots">
-      <carrot v-for="carrot in carrots" :key="carrot['.key']" :carrot="carrot" @delete-carrot="deleteCarrot"></carrot>
+      <carrot v-for="carrot in carrots" :key="carrot['.key']"></carrot>
     </transition-group>
   </div>
 </template>
@@ -33,9 +33,6 @@ export default {
   methods: {
     createCarrot: function () {
       this.$store.dispatch('createCarrot')
-    },
-    deleteCarrot: function (key) {
-      this.$store.dispatch('deleteCarrot', key)
     },
     deleteAllCarrots: function () {
       this.$store.dispatch('deleteAllCarrots')

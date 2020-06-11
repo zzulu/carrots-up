@@ -20,10 +20,6 @@ export default {
     })
   }),
 
-  deleteCarrot: firebaseAction(({ state }, key) => {
-    db.ref(`farms/${state.farmId}/${key}`).remove()
-  }),
-
   deleteAllCarrots: firebaseAction(({ state }) => {
     db.ref(`farms/${state.farmId}`).remove()
   }),
