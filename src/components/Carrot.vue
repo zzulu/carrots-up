@@ -6,10 +6,9 @@
 export default {
   name: 'Carrot',
   mounted: function () {
-    // alert('Carrots Up!')
-    // if (document.hidden) {
-    //   new Notification('🥕');      
-    // }
+    if (document.hidden) {
+      new Notification('🥕')
+    }
   },
 }
 </script>

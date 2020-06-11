@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 import firebase from '@/firebase'
 import Carrot from '@/components/Carrot'
 
@@ -37,25 +37,40 @@ export default {
     deleteAllCarrots: function () {
       this.$store.dispatch('deleteAllCarrots')
     },
+    askNotificationPermission: function () {
+      if (!('Notification' in window)) {
+        console.log("This browser does not support notifications.")
+      } else {
+        Notification.requestPermission((permission) => {
+            if(!('permission' in Notification)) {
+              Notification.permission = permission
+            }
+          })
+      }
+    },
+    onAuthStateChanged: function () {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.$store.dispatch('setUser', {
+            'uid': user.uid,
+          })
+          this.$store.dispatch('bindCarrots')
+        } else {
+          this.$store.dispatch('clearUser')
+          firebase.auth().signInAnonymously().catch((err) => {
+            console.log(`${err.code}: ${err.message}`)
+            this.$store.dispatch('clearUser')
+          })
+        }
+      })
+    },
   },
   created: function () {
     this.$store.dispatch('setFarm', this.$route.params.farmId)
   },
   mounted: function () {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.$store.dispatch('setUser', {
-          'uid': user.uid,
-        })
-        this.$store.dispatch('bindCarrots')
-      } else {
-        this.$store.dispatch('clearUser')
-        firebase.auth().signInAnonymously().catch((err) => {
-          console.log(`${err.code}: ${err.message}`)
-          this.$store.dispatch('clearUser')
-        });
-      }
-    });
+    this.askNotificationPermission()
+    this.onAuthStateChanged()
   },
   beforeDestroy: function () {
     this.$store.dispatch('unbindCarrots')
