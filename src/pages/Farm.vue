@@ -117,7 +117,7 @@ export default {
 @keyframes enter {
     from {
       opacity: 0;
-      transform: translateY(-32px);
+      transform: translateY(-40px);
     }
 
     to {
@@ -128,7 +128,7 @@ export default {
 
 .carrots-enter {
   opacity: 0;
-  transform: translateY(-32px);
+  transform: translateY(-40px);
 }
 
 .carrots-enter-active {
@@ -137,7 +137,7 @@ export default {
 
 .carrots-leave-to {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(40px);
 }
 
 .carrots-leave-active {
