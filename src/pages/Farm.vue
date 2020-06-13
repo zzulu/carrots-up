@@ -1,12 +1,8 @@
 <template>
   <div class="container">
-    <div class="buttons">
-      <button v-if="user.uid" @click="createCarrot" class="carrot up">
-        🥕
-      </button>
-      <button v-if="user.uid" @click="deleteAllCarrots" class="carrot up">
-        🗑
-      </button>
+    <div v-if="user.uid" class="buttons">
+      <button @click="createCarrot" class="carrot up">🥕</button>
+      <button @click="deleteAllCarrots" class="carrot up">🗑</button>
     </div>
     <transition-group tag="div" name="carrots" class="carrots">
       <carrot v-for="carrot in carrots" :key="carrot['.key']"></carrot>
@@ -42,7 +38,7 @@ export default {
         console.log("This browser does not support notifications.")
       } else {
         Notification.requestPermission((permission) => {
-            if(!('permission' in Notification)) {
+            if (!('permission' in Notification)) {
               Notification.permission = permission
             }
           })
@@ -66,13 +62,14 @@ export default {
     },
   },
   created: function () {
-    this.$store.dispatch('setFarm', this.$route.params.farmId)
+    this.$store.dispatch('setFarmId', this.$route.params.farmId)
   },
   mounted: function () {
     this.askNotificationPermission()
     this.onAuthStateChanged()
   },
   beforeDestroy: function () {
+    this.$store.dispatch('clearFarmId')
     this.$store.dispatch('unbindCarrots')
   },
 }
@@ -80,11 +77,11 @@ export default {
 
 <style>
 .buttons {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  position: relative;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
   text-align: center;
+  animation: enter .5s;
 }
 
 .up {
@@ -117,9 +114,21 @@ export default {
 
 /* Transitions */
 
+@keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(-32px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
 .carrots-enter {
   opacity: 0;
-  transform: translateY(-40px);
+  transform: translateY(-32px);
 }
 
 .carrots-enter-active {
@@ -128,7 +137,7 @@ export default {
 
 .carrots-leave-to {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(32px);
 }
 
 .carrots-leave-active {

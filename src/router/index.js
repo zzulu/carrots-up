@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Enter from '@/pages/Enter'
 import Farm from '@/pages/Farm'
 
 Vue.use(VueRouter)
@@ -9,14 +10,8 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: () => {
-        return {
-          name: 'farm',
-          params: {
-            farmId: Math.random().toString(36).substring(2, 7),
-          },
-        }
-      }
+      name: 'enter',
+      component: Enter,
     },
     {
       path: '/:farmId',

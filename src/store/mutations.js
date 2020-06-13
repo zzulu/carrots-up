@@ -7,6 +7,10 @@ export default {
     state.farmId = farmId
   },
 
+  clearFarmId: function (state) {
+    state.farmId = ''
+  },
+
   setUser: function (state, userData) {
     state.user = {
       ...userData

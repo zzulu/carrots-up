@@ -2,10 +2,6 @@ import { firebaseAction } from 'vuexfire'
 import { db } from '@/firebase'
 
 export default {
-  setFarm: function ({ commit }, FarmId) {
-    commit('setFarmId', FarmId)
-  },
-
   bindCarrots: firebaseAction(({ state, bindFirebaseRef }) => {
     return bindFirebaseRef('carrots', db.ref(`farms/${state.farmId}`))
   }),
@@ -23,6 +19,14 @@ export default {
   deleteAllCarrots: firebaseAction(({ state }) => {
     db.ref(`farms/${state.farmId}`).remove()
   }),
+
+  setFarmId: function ({ commit }, FarmId) {
+    commit('setFarmId', FarmId)
+  },
+
+  clearFarmId: function ({ commit }) {
+    commit('clearFarmId')
+  },
 
   setUser: function ({ commit }, userData) {
     commit('setUser', userData)
