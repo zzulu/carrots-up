@@ -11,6 +11,15 @@ export default {
 </script>
 
 <style>
+input[type=text] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 .container {
   width: 100%;
   padding-right: 15px;
